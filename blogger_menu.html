@@ -1,0 +1,163 @@
+<style>
+    a.post-label {
+        text-transform: uppercase;
+    }
+
+    a.post-titles {
+        color: #0000FF;
+    }
+</style>
+<br />
+<script>
+    //<![CDATA[
+        var postTitle = new Array();
+        var postUrl = new Array();
+        var postPublished = new Array();
+        var postDate = new Array();
+        var postLabels = new Array();
+        var postRecent = new Array();
+        var postComment = new Array();
+        var sortBy = "titleasc";
+        var postFilter = "";
+        var t_time = "Posted: ";
+        var t_in_c = " in: ";
+        var t_cm = " comments";
+
+        function bloggersitemap(a) {
+            function b() {
+                if ("entry" in a.feed) {
+                    var d = a.feed.entry.length;
+                    ii = 0;
+                    for (var h = 0; h < d; h++) {
+                        var n = a.feed.entry[h];
+                        var e = n.title.$t;
+                        var cm = n.thr$total.$t;
+                        var m = n.published.$t.substring(0, 10);
+                        var j;
+                        for (var g = 0; g < n.link.length; g++) {
+                            if (n.link[g].rel == "alternate") {
+                                j = n.link[g].href;
+                                break
+                            }
+                        }
+                        var o = "";
+                        for (var g = 0; g < n.link.length; g++) {
+                            if (n.link[g].rel == "enclosure") {
+                                o = n.link[g].href;
+                                break
+                            }
+                        }
+
+                        var c = new Array();
+                        if ("category" in n) {
+                            for (var g = 0; g < n.category.length; g++) {
+                                c[g] = n.category[g].term;
+                                var f = c[g].lastIndexOf(";");
+                                if (f != -1) {
+                                    c[g] = c[g].substring(0, f)
+                                }
+                            }
+                        }
+
+                        postLabels[ii] = c;
+                        postTitle[ii] = e;
+                        postComment[ii] = cm;
+                        postDate[ii] = m;
+                        postUrl[ii] = j;
+                        postPublished[ii] = o;
+                        if (h < 10) {
+                            postRecent[ii] = true
+                        } else {
+                            postRecent[ii] = false
+                        }
+                        ii = ii + 1
+                    }
+                }
+            }
+            b();
+            sortBy = "datenewest";
+            sortPosts(sortBy);
+            displayToc();
+            document.write('</br><div class="sitemap-link"><a href="" style="font-size: 10px; text-decoration:none; color: #5146CD;">Get This Widget</a></div>')
+        }
+
+        
+        function sortPosts(d) {
+            function c(e, g) {
+                var f = postTitle[e];
+                postTitle[e] = postTitle[g];
+                postTitle[g] = f;
+                var f = postDate[e];
+                postDate[e] = postDate[g];
+                postDate[g] = f;
+                var f = postUrl[e];
+                postUrl[e] = postUrl[g];
+                postUrl[g] = f;
+                var f = postLabels[e];
+                postLabels[e] = postLabels[g];
+                postLabels[g] = f;
+                var f = postPublished[e];
+                postPublished[e] = postPublished[g];
+                postPublished[g] = f;
+                var f = postRecent[e];
+                postRecent[e] = postRecent[g];
+                postRecent[g] = f
+            }
+            for (var b = 0; b < postTitle.length - 1; b++) {
+                for (var a = b + 1; a < postTitle.length; a++) {
+                    if (d == "titleasc") {
+                        if (postTitle[b] > postTitle[a]) {
+                            c(b, a)
+                        }
+                    }
+                    if (d == "titledesc") {
+                        if (postTitle[b] < postTitle[a]) {
+                            c(b, a)
+                        }
+                    }
+                    if (d == "dateoldest") {
+                        if (postDate[b] > postDate[a]) {
+                            c(b, a)
+                        }
+                    }
+                    if (d == "datenewest") {
+                        if (postDate[b] < postDate[a]) {
+                            c(b, a)
+                        }
+                    }
+                    if (d == "orderlabel") {
+                        if (postLabels[b] > postLabels[a]) {
+                            c(b, a)
+                        }
+                    }
+                }
+            }
+        }
+        
+        function displayToc() {
+            var a = 0;
+            console.log(postTitle);
+            document.write("<div style=\"font-family: Arial; font-size: 14px; font-style: normal; line-height: 0.5; text-align: justify;\"><div id=\"nlist\"><br>");
+            while (a < postTitle.length) {
+                document.write('<a href="'+postUrl[a]+'"'
+                + 'target="_blank"><p>'+postTitle[a]+' ('+ postComment[a] + t_cm +')</p></a>'+t_time+postDate[a]+t_in_c+' '
+                + '<a class="post-label" href="/search/label/'+postLabels[a][0]+'" target="_blank">'+postLabels[a][0]+'</a><br><br><br>');
+                a++;
+            }
+            document.write("</div></div>");
+        }
+
+        var postTitle=new Array,postUrl=new Array,postPublished=new Array,postDate=new Array,postLabels=new Array,postRecent=new Array,postComment=new Array,sortBy="titleasc",postFilter="",t_time="Đăng ngày: ",t_in_c=" trong mục: ",t_cm=" Nhận xét";function bloggersitemap(t){!function(){if("entry"in t.feed){var e=t.feed.entry.length;ii=0;for(var s=0;s<e;s++){for(var o,i=t.feed.entry[s],l=i.title.$t,r=i.thr$total.$t,a=i.published.$t.substring(0,10),n=0;n<i.link.length;n++)if("alternate"==i.link[n].rel){o=i.link[n].href;break}var p="";for(n=0;n<i.link.length;n++)if("enclosure"==i.link[n].rel){p=i.link[n].href;break}var c=new Array;if("category"in i)for(n=0;n<i.category.length;n++){c[n]=i.category[n].term;var b=c[n].lastIndexOf(";");-1!=b&&(c[n]=c[n].substring(0,b))}postLabels[ii]=c,postTitle[ii]=l,postComment[ii]=r,postDate[ii]=a,postUrl[ii]=o,postPublished[ii]=p,postRecent[ii]=s<10,ii+=1}}}(),sortPosts(sortBy="datenewest"),displayToc(),document.write('</br><div class="sitemap-link"><a href="" style="font-size: 10px; text-decoration:none; color: #5146CD;">Get This Widget</a></div>')}function sortPosts(t){function e(t,e){var s=postTitle[t];postTitle[t]=postTitle[e],postTitle[e]=s;s=postDate[t];postDate[t]=postDate[e],postDate[e]=s;s=postUrl[t];postUrl[t]=postUrl[e],postUrl[e]=s;s=postLabels[t];postLabels[t]=postLabels[e],postLabels[e]=s;s=postPublished[t];postPublished[t]=postPublished[e],postPublished[e]=s;s=postRecent[t];postRecent[t]=postRecent[e],postRecent[e]=s}for(var s=0;s<postTitle.length-1;s++)for(var o=s+1;o<postTitle.length;o++)"titleasc"==t&&postTitle[s]>postTitle[o]&&e(s,o),"titledesc"==t&&postTitle[s]<postTitle[o]&&e(s,o),"dateoldest"==t&&postDate[s]>postDate[o]&&e(s,o),"datenewest"==t&&postDate[s]<postDate[o]&&e(s,o),"orderlabel"==t&&postLabels[s]>postLabels[o]&&e(s,o)}function displayToc(){var t=0;for(console.log(postTitle),document.write('<div style="font-family: Arial; font-size: 14px; font-style: normal; line-height: 0.5; text-align: justify;"><div id="nlist"><br>');t<postTitle.length;)document.write('<a href="'+postUrl[t]+'"target="_blank"><p>'+postTitle[t]+" ("+postComment[t]+t_cm+")</p></a>"+t_time+postDate[t]+t_in_c+' <a class="post-label" href="/search/label/'+postLabels[t][0]+'" target="_blank">'+postLabels[t][0]+"</a><br><br><br>"),t++;document.write("</div></div>")}
+    //]]>
+</script>
+
+<script src="/feeds/posts/default?max-results=9999&alt=json-in-script&callback=bloggersitemap&?max-results=999&start-index=150"></script>
+<script>
+    var divs = document.getElementById("nlist"); 
+    var spans = divs.getElementsByTagName("p");
+    var tol = spans.length;
+    for (var i = 0; i < tol; i++) { 
+        var l = spans[i]["innerText" in document.body ? "innerText" : "textContent"];
+        spans[i]["innerText" in document.body ? "innerText" : "textContent"] = (tol - i) + '. ' + l;
+    }
+</script>
