@@ -59,6 +59,11 @@ function perform_backups()
 			exit 1;
 		else
 			mv $FINAL_BACKUP_DIR"$DATABASE"."$DATE".sql.gz.in_progress $FINAL_BACKUP_DIR"$DATABASE"."$DATE".sql.gz
+			# Create a symlink to daily folder
+			if [ "$SUFFIX" != "daily" ]
+                        then
+                                ln -s ../$SUFFIX/"$DATABASE"."$DATE".sql.gz $BACKUP_DIR"daily/"
+                        fi
 		fi
 	done
  
